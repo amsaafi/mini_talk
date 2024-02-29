@@ -6,5 +6,8 @@
 #define MINI_TALK_H
 
 
+void    handler(int sigtype);
+SIG_DFL
+_SYS_CDE
 
 #endif
