@@ -42,10 +42,13 @@ int char_to_bin(char c, int pid)
             kill(pid, SIGUSR2);
         while (glb == 0)
         {
-            if (x = 42)
+            if (x == 42)
+            {
                 write(1, "TIMEOUT: no response from server\n", 33);
+                exit(1);
+            }
             x++;
-            usleep(70);
+            usleep(84);
         }
         glb = 0;
         bit--;
@@ -53,10 +56,31 @@ int char_to_bin(char c, int pid)
     return (0);
 }
 
-int main(int ac, int *av[])
+int main(int ac, char *av[])
 {
     struct sigaction   sa;
     char    *msg;
     int pid;
+    int byte;
 
+    if (ac != 3)
+    {
+        ft_putstr("Usage: ./Client \"PID\" \"message\" \n");
+        return (1);
+    }
+    pid = ft_atoi(av[1]);
+    sigemptyset(&sa.sa_mask);
+
+    sa.sa_flags = SA_SIGINFO;
+    sa.sa_sigaction = sig_handler;
+
+    msg = av[2];
+    byte = 0;
+    while (msg[byte] != '\0')
+    {
+        char_to_bin(msg[byte], pid);
+        byte++;
+    }
+    char_to_bin('\0', pid);
+    return (0);
 }
