@@ -12,61 +12,64 @@
 
 #include "mini_talk.h"
 
-void    bin_to_char(int signum, char *c)
+void handle_sigusr(int signum, siginfo_t *info, void *context)
 {
-    static int bit_index = 7;
-
-    if (signum == SIGUSR1)
-        *c |= (1 << bit_index);
-    else if (signum == SIGUSR2)
-        *c &= ~(1 << bit_index);
-
-    bit_index--;
-
-    if (bit_index < 0)
-        bit_index = 7;
-}
-
-void    sig_handler(int signum, siginfo_t *info, void *context)
-{
-    static int pid;
-    static int i;
-    static char c;
+    static int bit_index = 0;
+    static unsigned char c = 0;
 
     (void)context;
-    pid = 0;
-    c = '\0';
-    i = 0;
-    if (pid == 0)
-        pid = info->si_pid;
-    bin_to_char(signum, &c);
-    if (++i == 8)
+
+    if (signum == SIGUSR1)
+        c |= (1 << (7 - bit_index));
+
+    bit_index++;
+
+    if (bit_index == 8)
     {
-        i = 0;
         if (c == '\0')
         {
-            kill(pid, SIGUSR1);
-            pid = 0;
-            return;
+            // End of message, send acknowledgement
+            if (kill(info->si_pid, SIGUSR1) == -1)
+                printf("Failed to send acknowledgement (SIGUSR1)");
         }
-        printf("%c", c);
-        c = '\0';
+        else
+        {
+            // Process the received character
+            ft_putstr(c, STDOUT_FILENO);
+        }
+
+        c = 0;
+        bit_index = 0;
     }
-    kill(pid, SIGUSR2);
+
+    // Send acknowledgment signal
+    if (kill(info->si_pid, SIGUSR2) == -1)
+        printf("Failed to send acknowledgment (SIGUSR2)");
 }
 
-int main(int ac, int *av[])
-{
-    struct sigaction sa;
 
-    printf("Server PID: %d\n", getpid());
-    sa.sa_sigaction = sig_handler;
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_SIGINFO;
-    
-    while (1)
-    {
-        pause();
-    }
-    return (0);
+// 1 -> 00000001
+// a -> 01100001
+
+void	config_signals(void)
+{
+	struct sigaction	sa_newsig;
+
+	sa_newsig.sa_sigaction = &handle_sigusr;
+	sa_newsig.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
+		printf("Failed to change SIGUSR1's behavior");
+	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
+		printf("Failed to change SIGUSR2's behavior");
+}
+
+int	main(void)
+{
+	pid_t	pid;
+
+	pid = getpid();
+	printf("SERVER PID = %d\n\n", pid);
+	while (1)
+		config_signals();
+	return (EXIT_SUCCESS);
 }

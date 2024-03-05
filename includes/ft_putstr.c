@@ -1,13 +1,6 @@
 #include "../mini_talk.h"
 
-void	ft_putstr(char *str)
+void	ft_putstr(char c, int fd)
 {
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		write(1, &str[i], 1);
-		i++;
-	}
+	write(fd, &c, 1);
 }

@@ -12,75 +12,56 @@
 
 #include "mini_talk.h"
 
-static int glb = 0;
 
-void    sig_handler(int sigint, siginfo_t *info, void *context)
+void	send_msg(pid_t sv_pid, char *msg)
 {
-    static  int i;
-    
-    i = 0;
-    glb = 1;
-    if (sigint == SIGUSR2)
-        i++;
-    else if (sigint == SIGUSR1)
-        write(1, "recieved bits\n", 14);
+	unsigned char	c;
+	int				nbr_bits;
+
+	while (*msg)
+	{
+		c = *msg;
+		nbr_bits = 8;
+		while (nbr_bits--)
+		{
+			if (c & 0b10000000)
+				kill(sv_pid, SIGUSR1);
+			else
+				kill(sv_pid, SIGUSR2);
+			usleep(50);
+			c <<= 1;
+		}
+		msg++;
+	}
 }
 
-int char_to_bin(char c, int pid)
+void	sig_handler(int signum)
 {
-    int x;
-    int bit;
-
-    bit = 8;
-    while (bit > 0)
-    {
-        x = 0;
-        
-        if ((c >> bit) & 1)
-            kill(pid, SIGUSR1);
-        else
-            kill(pid, SIGUSR2);
-        while (glb == 0)
-        {
-            if (x == 42)
-            {
-                write(1, "TIMEOUT: no response from server\n", 33);
-                exit(1);
-            }
-            x++;
-            usleep(84);
-        }
-        glb = 0;
-        bit--;
-    }
-    return (0);
+	if (signum == SIGUSR2)
+		write(1, "Character has been sucessfully receieved!\n", 42);
 }
 
-int main(int ac, char *av[])
+void	config_signals(void)
 {
-    struct sigaction   sa;
-    char    *msg;
-    int pid;
-    int byte;
+	struct sigaction	sa_newsig;
 
-    if (ac != 3)
-    {
-        ft_putstr("Usage: ./Client \"PID\" \"message\" \n");
-        return (1);
-    }
-    pid = ft_atoi(av[1]);
-    sigemptyset(&sa.sa_mask);
+	sa_newsig.sa_handler = &sig_handler;
+	sa_newsig.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
+		printf("Failed to change SIGUSR1's behavior");
+	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
+		printf("Failed to change SIGUSR2's behavior");
+}
 
-    sa.sa_flags = SA_SIGINFO;
-    sa.sa_sigaction = sig_handler;
+int	main(int argc, char **argv)
+{
+	pid_t		sv_pid;
 
-    msg = av[2];
-    byte = 0;
-    while (msg[byte] != '\0')
-    {
-        char_to_bin(msg[byte], pid);
-        byte++;
-    }
-    char_to_bin('\0', pid);
-    return (0);
+	// args_check(argc, argv);
+	sv_pid = atoi(argv[1]);
+	config_signals();
+	send_msg(sv_pid, argv[2]);
+	while (1)
+		pause();
+	return (EXIT_SUCCESS);
 }

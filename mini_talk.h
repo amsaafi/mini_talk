@@ -14,12 +14,15 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include <string.h>
+#include <ctype.h>
+
 #include <stdio.h>
 
 #ifndef MINI_TALK_H
 #define MINI_TALK_H
 
-void	ft_putstr(char *str);
+void	ft_putstr(char c, int fd);
 int	ft_atoi(const char *nptr);
 
 #endif
