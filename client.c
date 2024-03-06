@@ -13,25 +13,25 @@
 #include "mini_talk.h"
 
 
-void	send_msg(pid_t sv_pid, char *msg)
+void	send_msg(int pid, char *str)
 {
 	unsigned char	c;
-	int				nbr_bits;
+	int				bit;
 
-	while (*msg)
+	while (*str)
 	{
-		c = *msg;
-		nbr_bits = 8;
-		while (nbr_bits--)
+		c = *str;
+		bit = 8;
+		while (bit > 0)
 		{
-			if (c & 0b10000000)
-				kill(sv_pid, SIGUSR1);
+			if ((c >> bit - 1) & 1)
+				kill(pid, SIGUSR1);
 			else
-				kill(sv_pid, SIGUSR2);
-			usleep(50);
-			c <<= 1;
+				kill(pid, SIGUSR2);
+			usleep(255);
+			bit--;
 		}
-		msg++;
+		str++;
 	}
 }
 
@@ -41,27 +41,20 @@ void	sig_handler(int signum)
 		write(1, "Character has been sucessfully receieved!\n", 42);
 }
 
-void	config_signals(void)
+
+int	main(int ac, char *av[])
 {
-	struct sigaction	sa_newsig;
+	int	pid;
+	struct sigaction sa;
 
-	sa_newsig.sa_handler = &sig_handler;
-	sa_newsig.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
-		printf("Failed to change SIGUSR1's behavior");
-	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
-		printf("Failed to change SIGUSR2's behavior");
-}
-
-int	main(int argc, char **argv)
-{
-	pid_t		sv_pid;
-
-	// args_check(argc, argv);
-	sv_pid = atoi(argv[1]);
-	config_signals();
-	send_msg(sv_pid, argv[2]);
+	// check_args(ac, av);
+	pid = atoi(av[1]);
+	sa.sa_handler = &sig_handler;
+	sa.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
+	send_msg(pid, av[2]);
 	while (1)
 		pause();
-	return (EXIT_SUCCESS);
+	return (0);
 }
