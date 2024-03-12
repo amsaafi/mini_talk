@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:07:35 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/12 14:25:08 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:28:36 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <stdio.h>
 
 void	ft_putstr(char c, int fd);
 int		ft_atoi(const char *nptr);

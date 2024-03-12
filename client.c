@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:07:37 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/12 14:16:43 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:27:39 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	send_msg(int pid, char *str)
 		bit = 8;
 		while (bit > 0)
 		{
-			if ((c >> bit - 1) & 1)
+			if ((c >> (bit - 1)) & 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
@@ -38,7 +38,7 @@ int	main(int ac, char *av[])
 {
 	int	pid;
 
-	pid = atoi(av[1]);
+	pid = ft_atoi(av[1]);
 	send_msg(pid, av[2]);
 	return (0);
 }

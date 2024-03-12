@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:06:16 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/04 13:06:17 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:30:45 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	config_signals(void)
 
 int	main(void)
 {
-	int	pid;
+	__pid_t	pid;
 
 	pid = getpid();
 	printf("SERVER PID = %d\n\n", pid);
