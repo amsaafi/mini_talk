@@ -34,12 +34,23 @@ void	send_msg(int pid, char *str)
 	}
 }
 
+void	sig_handler(int signum)
+{
+	if (signum == SIGUSR2)
+		write(1, "Character has been sucessfully receieved!\n", 42);
+}
+
 int	main(int ac, char *av[])
 {
-	int	pid;
+	int					pid;
+	struct sigaction	sa;
 
 	// check_args(ac, av);
 	pid = atoi(av[1]);
+	sa.sa_handler = &sig_handler;
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	send_msg(pid, av[2]);
 	return (0);
 }
