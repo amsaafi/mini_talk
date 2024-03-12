@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   server_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:06:16 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/04 13:06:17 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/12 14:21:47 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	handle_sigusr(int signum, siginfo_t *info, void *context)
 {
 	static int				bit_index;
-	static unsigned char	c = 0;
+	static unsigned char	c;
 
 	(void)context;
 	bit_index = 0;
