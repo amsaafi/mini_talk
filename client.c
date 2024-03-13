@@ -12,7 +12,7 @@
 
 #include "mini_talk.h"
 
-void	send_msg(int pid, char *str)
+void	send_msg(__pid_t pid, char *str)
 {
 	unsigned char	c;
 	int				bit;
@@ -36,7 +36,7 @@ void	send_msg(int pid, char *str)
 
 int	main(int ac, char *av[])
 {
-	int	pid;
+	__pid_t	pid;
 
 	pid = ft_atoi(av[1]);
 	send_msg(pid, av[2]);

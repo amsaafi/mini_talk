@@ -51,10 +51,10 @@ void	config_signals(void)
 
 int	main(void)
 {
-	int	pid;
+	__pid_t	pid;
 
 	pid = getpid();
-	printf("SERVER PID = %d\n\n", pid);
+	ft_putnbr(pid);
 	while (1)
 		config_signals();
 	return (0);

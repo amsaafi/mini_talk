@@ -16,9 +16,9 @@
 # include <signal.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 
 void	ft_putstr(char c, int fd);
 int		ft_atoi(const char *nptr);
+void	ft_putnbr(int nb);
 
 #endif
