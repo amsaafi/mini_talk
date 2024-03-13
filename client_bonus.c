@@ -23,7 +23,7 @@ void	send_msg(__pid_t pid, char *str)
 		bit = 8;
 		while (bit > 0)
 		{
-			if ((c >> bit - 1) & 1)
+			if ((c >> (bit - 1)) & 1)
 				kill(pid, SIGUSR1);
 			else
 				kill(pid, SIGUSR2);
@@ -45,11 +45,14 @@ int	main(int ac, char *av[])
 	__pid_t				pid;
 	struct sigaction	sa;
 
-	pid = ft_atoi(av[1]);
-	sa.sa_handler = &sig_handler;
-	sa.sa_flags = 0;
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
-	send_msg(pid, av[2]);
+	if (ac == 3)
+	{
+		pid = ft_atoi(av[1]);
+		sa.sa_handler = &sig_handler;
+		sa.sa_flags = 0;
+		sigaction(SIGUSR1, &sa, NULL);
+		sigaction(SIGUSR2, &sa, NULL);
+		send_msg(pid, av[2]);
+	}
 	return (0);
 }

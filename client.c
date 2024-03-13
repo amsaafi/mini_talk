@@ -38,7 +38,10 @@ int	main(int ac, char *av[])
 {
 	__pid_t	pid;
 
-	pid = ft_atoi(av[1]);
-	send_msg(pid, av[2]);
+	if (ac == 3)
+	{
+		pid = ft_atoi(av[1]);
+		send_msg(pid, av[2]);
+	}
 	return (0);
 }
