@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: salah <salah@student.42.fr>                +#+  +:+       +#+        */
+/*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:07:37 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/15 14:05:18 by salah            ###   ########.fr       */
+/*   Updated: 2024/03/15 14:40:21 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,27 @@ void	send_msg(__pid_t pid, char *str)
 	}
 }
 
+void	check_arg(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+			str++;
+		else
+			exit(1);
+	}
+}
+
 int	main(int ac, char *av[])
 {
 	__pid_t	pid;
 
 	if (ac == 3)
 	{
+		check_arg(av[1]);
 		pid = ft_atoi(av[1]);
 		send_msg(pid, av[2]);
 	}
