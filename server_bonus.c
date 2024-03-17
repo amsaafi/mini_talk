@@ -6,11 +6,11 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:06:16 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/12 14:21:47 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:38:19 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_talk.h"
+#include "mini_talk_bonus.h"
 
 void	handle_sigusr(int signum, siginfo_t *info, void *context)
 {

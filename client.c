@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:07:37 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/15 14:40:21 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/16 13:51:13 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ int	main(int ac, char *av[])
 	{
 		check_arg(av[1]);
 		pid = ft_atoi(av[1]);
+		if (pid == 0 || pid == -1)
+			exit(1);
 		send_msg(pid, av[2]);
 	}
 	return (0);

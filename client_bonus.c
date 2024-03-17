@@ -6,11 +6,11 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 12:07:37 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/15 14:39:49 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:38:28 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mini_talk.h"
+#include "mini_talk_bonus.h"
 
 void	send_msg(__pid_t pid, char *str)
 {
@@ -63,6 +63,8 @@ int	main(int ac, char *av[])
 	{
 		check_arg(av[1]);
 		pid = ft_atoi(av[1]);
+		if (pid == 0 || pid == -1)
+			exit(1);
 		sa.sa_handler = &sig_handler;
 		sa.sa_flags = 0;
 		sigaction(SIGUSR1, &sa, NULL);
