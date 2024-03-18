@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:06:16 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/17 15:38:19 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:24:31 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ void	handle_sigusr(int signum, siginfo_t *info, void *context)
 	static unsigned char	c;
 
 	(void)context;
-	bit_index = 0;
-	c = 0;
 	if (signum == SIGUSR1)
 		c |= (1 << (7 - bit_index));
 	bit_index++;

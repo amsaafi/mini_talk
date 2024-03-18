@@ -6,7 +6,7 @@
 /*   By: samsaafi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 13:06:16 by samsaafi          #+#    #+#             */
-/*   Updated: 2024/03/12 14:30:45 by samsaafi         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:26:28 by samsaafi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	handle_sigusr(int signum)
 {
-	static int				bit_index = 0;
-	static unsigned char	c = 0;
+	static int				bit_index;
+	static unsigned char	c;
 
 	if (signum == SIGUSR1)
 		c |= (1 << (7 - bit_index));
